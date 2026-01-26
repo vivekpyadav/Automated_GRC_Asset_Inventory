@@ -1,0 +1,93 @@
+[
+    {
+        "asset_name": "good-pod",
+        "owner": "hr-dept",
+        "system_id": "payroll-01",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856178"
+    },
+    {
+        "asset_name": "coredns-6f6b679f8f-bfndm",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856491"
+    },
+    {
+        "asset_name": "coredns-6f6b679f8f-k9tns",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856496"
+    },
+    {
+        "asset_name": "etcd-minikube",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856503"
+    },
+    {
+        "asset_name": "kube-apiserver-minikube",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856506"
+    },
+    {
+        "asset_name": "kube-controller-manager-minikube",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856509"
+    },
+    {
+        "asset_name": "kube-proxy-vh5kc",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856514"
+    },
+    {
+        "asset_name": "kube-scheduler-minikube",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856516"
+    },
+    {
+        "asset_name": "storage-provisioner",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856519"
+    },
+    {
+        "asset_name": "kyverno-admission-controller-75f94f795c-n6pkw",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856521"
+    },
+    {
+        "asset_name": "kyverno-background-controller-84668c7b48-dct2b",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856523"
+    },
+    {
+        "asset_name": "kyverno-cleanup-controller-54fd8486cf-w4f7k",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856526"
+    },
+    {
+        "asset_name": "kyverno-reports-controller-d5cb5784-pzbwn",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "discovery_date": "2026-01-26 23:58:02.856528"
+    }
+]

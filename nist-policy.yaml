@@ -1,0 +1,26 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: nist-asset-inventory-labels
+  annotations:
+    policies.kyverno.io/title: Enforce Asset Accountability
+    policies.kyverno.io/description: >-
+      Satisfies NIST 800-53 IA-3 and SCF Granular_Inventory_Development 
+      by ensuring every component has an Owner and System ID.
+spec:
+  validationFailureAction: Enforce # This blocks the action!
+  rules:
+  - name: check-for-labels
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          - Service
+    validate:
+      message: "GRC REJECTION: You must provide 'owner' and 'system-id' labels for Asset Inventory compliance."
+      pattern:
+        metadata:
+          labels:
+            owner: "?*"      # Matches any string (cannot be empty)
+            system-id: "?*"  # Matches any string (cannot be empty)

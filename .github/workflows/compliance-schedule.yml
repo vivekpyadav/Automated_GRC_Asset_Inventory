@@ -1,0 +1,20 @@
+name: Weekly Asset Review
+on:
+  schedule:
+    - cron: '0 0 * * 1' # Runs every Monday at midnight
+  workflow_dispatch: # Allows you to run it manually for the demo
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Inventory Script
+        run: python inventory_collector.py
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "Weekly Inventory Update for Officer Review"
+          title: "NIST 800-53: System Inventory Review - ${{ github.date }}"
+          body: "Please review the attached asset_inventory.json for accuracy."
+          branch: compliance-update
