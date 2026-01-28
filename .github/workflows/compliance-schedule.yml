@@ -6,7 +6,7 @@ on:
 
 jobs:
   inventory:
-    runs-on: [self-hosted, local-k8s]
+    runs-on: [self-hosted, Linux]
     timeout-minutes: 10 
     
     steps:
