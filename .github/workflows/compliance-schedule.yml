@@ -1,20 +1,54 @@
 name: Weekly Asset Review
 on:
   schedule:
-    - cron: '0 0 * * 1' # Runs every Monday at midnight
-  workflow_dispatch: # Allows you to run it manually for the demo
+    - cron: '0 0 * * 1' 
+  workflow_dispatch: 
 
 jobs:
   inventory:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, local-k8s]
+    timeout-minutes: 10 
+    
     steps:
-      - uses: actions/checkout@v3
-      - name: Run Inventory Script
-        run: python inventory_collector.py
-      - name: Create Pull Request
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Git User
+        # This is needed so the runner can "sign" the inventory update
+        run: |
+          git config --global user.name "Compliance-Bot"
+          git config --global user.email "compliance-bot@example.com"
+
+      - name: Run Inventory Script (Attempt 1)
+        id: run_script
+        continue-on-error: true 
+        run: python3 inventory_collector.py
+
+      - name: Retry Script (Attempt 2)
+        if: steps.run_script.outcome == 'failure'
+        run: |
+          echo "First attempt failed. Waiting 60 seconds before retrying..."
+          sleep 60
+          python3 inventory_collector.py
+
+      - name: Create Pull Request (On Success)
+        # success() ensures this ONLY runs if the script actually worked
+        if: success()
         uses: peter-evans/create-pull-request@v5
         with:
-          commit-message: "Weekly Inventory Update for Officer Review"
-          title: "NIST 800-53: System Inventory Review - ${{ github.date }}"
-          body: "Please review the attached asset_inventory.json for accuracy."
+          token: ${{ secrets.GITHUB_TOKEN }} # Built-in secret, no setup needed
+          commit-message: "Weekly Inventory Update for NIST 800-53"
+          title: "NIST 800-53: System Inventory Review"
+          body: "Automated update of system components. Please review for Component_Accountability."
           branch: compliance-update
+          delete-branch: true
+
+      - name: Send Slack Notification (On Failure)
+        # failure() ensures this ONLY runs if both attempts of the script failed
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: '#ff0000'
+          SLACK_TITLE: 'CRITICAL: NIST 800-53 Control Failure'
+          SLACK_MESSAGE: 'The Weekly Asset Inventory failed after 2 attempts. Please check the Local Runner and Minikube status.'
