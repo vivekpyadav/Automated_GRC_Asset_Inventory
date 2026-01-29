@@ -4,6 +4,13 @@ on:
     - cron: '0 0 * * 1' 
   workflow_dispatch: 
 
+# Added permissions block to ensure the GITHUB_TOKEN can write the Dashboard and the PR
+permissions:
+  contents: write
+  pull-requests: write
+  pages: write
+  id-token: write
+
 jobs:
   inventory:
     runs-on: [self-hosted, Linux]
@@ -14,7 +21,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Git User
-        # This is needed so the runner can "sign" the inventory update
         run: |
           git config --global user.name "Compliance-Bot"
           git config --global user.email "compliance-bot@example.com"
@@ -31,20 +37,26 @@ jobs:
           sleep 60
           python3 inventory_collector.py
 
+      - name: Deploy Dashboard to GitHub Pages (Visual Evidence)
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ 
+          publish_branch: gh-pages # This creates a website at your-username.github.io/your-repo/
+
       - name: Create Pull Request (On Success)
-        # success() ensures this ONLY runs if the script actually worked
         if: success()
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # Built-in secret, no setup needed
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Weekly Inventory Update for NIST 800-53"
           title: "NIST 800-53: System Inventory Review"
-          body: "Automated update of system components. Please review for Component_Accountability."
+          body: "Automated update of system components. Dashboard has been updated at GitHub Pages."
           branch: compliance-update
           delete-branch: true
 
       - name: Send Slack Notification (On Failure)
-        # failure() ensures this ONLY runs if both attempts of the script failed
         if: failure()
         uses: rtCamp/action-slack-notify@v2
         env:
