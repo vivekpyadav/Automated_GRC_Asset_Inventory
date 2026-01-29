@@ -61,17 +61,14 @@ jobs:
       - name: Manual Git Push (Alternative to PR)
         if: success()
         run: |
-          # 1. Configure the remote URL with the GITHUB_TOKEN for authentication
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           
-          # 2. Add the updated inventory and dashboard
-          git add asset_inventory.json index.html github_summary.md
+          # Explicitly add ONLY the compliance files (ignores the runner folder)
+          git add asset_inventory.json index.html github_summary.md || echo "Some files missing, continuing..."
           
-          # 3. Check if there are actually changes to commit
           if git diff --staged --quiet; then
             echo "No changes in inventory. Skipping push."
           else
-            # 4. Commit and push directly to master
             git commit -m "Compliance Update: Run #${{ github.run_number }}"
             git push origin HEAD:master
           fi
