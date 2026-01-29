@@ -4,7 +4,6 @@ on:
     - cron: '0 0 * * 1' 
   workflow_dispatch: 
 
-# Added permissions block to ensure the GITHUB_TOKEN can write the Dashboard and the PR
 permissions:
   contents: write
   pull-requests: write
@@ -19,6 +18,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          path: . # Explicitly set path to avoid nesting errors
+
+      - name: Fix Git Safe Directory
+        # This prevents the 'ENOENT' error by telling Git the local folder is safe
+        run: git config --global --add safe.directory ${{ github.workspace }}
 
       - name: Setup Git User
         run: |
@@ -37,22 +42,31 @@ jobs:
           sleep 60
           python3 inventory_collector.py
 
+      - name: Write Job Summary
+        # This creates the table in the GitHub Actions UI
+        if: always()
+        run: |
+          if [ -f github_summary.md ]; then
+            cat github_summary.md >> $GITHUB_STEP_SUMMARY
+          fi
+
       - name: Deploy Dashboard to GitHub Pages (Visual Evidence)
         if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./ 
-          publish_branch: gh-pages # This creates a website at your-username.github.io/your-repo/
+          publish_branch: gh-pages
 
       - name: Create Pull Request (On Success)
         if: success()
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          path: . # Match the checkout path
           commit-message: "Weekly Inventory Update for NIST 800-53"
           title: "NIST 800-53: System Inventory Review"
-          body: "Automated update of system components. Dashboard has been updated at GitHub Pages."
+          body: "Automated update of system components. Check the Action Summary for the live table."
           branch: compliance-update
           delete-branch: true
 
