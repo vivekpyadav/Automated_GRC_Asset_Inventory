@@ -1,0 +1,48 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>NIST 800-53 Compliance Dashboard</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background: #f0f2f5; padding-top: 50px; }
+            .container { width: 500px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+            .status-box { font-size: 2.5em; font-weight: bold; color: #dc3545; margin: 20px 0; }
+            h1 { color: #1a73e8; }
+            .stats { font-size: 1.1em; color: #555; }
+            .footer { margin-top: 25px; font-size: 0.8em; color: #888; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Compliance Dashboard</h1>
+            <p>NIST 800-53: Asset Management Control</p>
+            <canvas id="complianceChart"></canvas>
+            <div class="status-box">12.5%</div>
+            <div class="stats">
+                <p>Total Assets Discovered: <strong>16</strong></p>
+                <p>Compliant: 2 | Non-Compliant: 14</p>
+            </div>
+            <div class="footer">Last Audit: 2026-01-29 23:37:15</div>
+        </div>
+        <script>
+            const ctx = document.getElementById('complianceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Compliant', 'Non-Compliant'],
+                    datasets: [{
+                        data: [2, 14],
+                        backgroundColor: ['#28a745', '#dc3545'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '75%',
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    
