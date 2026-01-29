@@ -36,6 +36,20 @@ def get_kubernetes_inventory():
     # CRITICAL FIX: Return the list so the dashboard function can use it
     return inventory
 
+def generate_github_summary(inventory_data):
+    # This creates the Markdown file for the GitHub UI
+    summary = "### 📊 NIST 800-53 Compliance Summary\n"
+    summary += "| Asset Name | Owner | System ID | Status | Compliance |\n"
+    summary += "| :--- | :--- | :--- | :--- | :--- |\n"
+    
+    for item in inventory_data:
+        is_compliant = "✅" if item['owner'] != "UNKNOWN" and item['system_id'] != "UNKNOWN" else "❌"
+        summary += f"| {item['asset_name']} | {item['owner']} | {item['system_id']} | {item['status']} | {is_compliant} |\n"
+    
+    with open('github_summary.md', 'w') as f:
+        f.write(summary)
+    print("GitHub Job Summary file created.")
+
 def generate_html_dashboard(inventory_data):
     total = len(inventory_data)
     
@@ -105,3 +119,5 @@ if __name__ == "__main__":
     # Pass that variable to the dashboard generator
     generate_html_dashboard(inventory)
     print("HTML dashboard created: index.html")
+    generate_github_summary(inventory)
+    print("GitHub Job Summary file created.")
