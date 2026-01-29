@@ -50,14 +50,6 @@ jobs:
             cat github_summary.md >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name: Deploy Dashboard to GitHub Pages (Visual Evidence)
-        if: success()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./ 
-          publish_branch: gh-pages
-
       - name: Manual Git Push (Alternative to PR)
         if: success()
         run: |
@@ -72,6 +64,16 @@ jobs:
             git commit -m "Compliance Update: Run #${{ github.run_number }}"
             git push origin HEAD:master
           fi
+
+      - name: Deploy Dashboard to GitHub Pages (Visual Evidence)
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ 
+          publish_branch: gh-pages
+
+      
 
       - name: Send Slack Notification (On Failure)
         if: failure()
