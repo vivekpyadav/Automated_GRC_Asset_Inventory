@@ -58,17 +58,23 @@ jobs:
           publish_dir: ./ 
           publish_branch: gh-pages
 
-      - name: Create Pull Request (On Success)
+      - name: Manual Git Push (Alternative to PR)
         if: success()
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: . # Match the checkout path
-          commit-message: "Weekly Inventory Update for NIST 800-53"
-          title: "NIST 800-53: System Inventory Review"
-          body: "Automated update of system components. Check the Action Summary for the live table."
-          branch: compliance-update
-          delete-branch: true
+        run: |
+          # 1. Configure the remote URL with the GITHUB_TOKEN for authentication
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          
+          # 2. Add the updated inventory and dashboard
+          git add asset_inventory.json index.html github_summary.md
+          
+          # 3. Check if there are actually changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes in inventory. Skipping push."
+          else
+            # 4. Commit and push directly to master
+            git commit -m "Compliance Update: Run #${{ github.run_number }}"
+            git push origin HEAD:master
+          fi
 
       - name: Send Slack Notification (On Failure)
         if: failure()
