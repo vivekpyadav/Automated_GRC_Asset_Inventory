@@ -4,90 +4,111 @@
         "owner": "hr-dept",
         "system_id": "payroll-01",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856178"
+        "discovery_date": "2026-01-28 22:44:06.975208"
+    },
+    {
+        "asset_name": "good-pod2",
+        "owner": "DevOps-dept",
+        "system_id": "SYS-0101",
+        "status": "Running",
+        "discovery_date": "2026-01-28 22:44:06.975247"
     },
     {
         "asset_name": "coredns-6f6b679f8f-bfndm",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856491"
+        "discovery_date": "2026-01-28 22:44:06.975254"
     },
     {
         "asset_name": "coredns-6f6b679f8f-k9tns",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856496"
+        "discovery_date": "2026-01-28 22:44:06.975260"
     },
     {
         "asset_name": "etcd-minikube",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856503"
+        "discovery_date": "2026-01-28 22:44:06.975265"
     },
     {
         "asset_name": "kube-apiserver-minikube",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856506"
+        "discovery_date": "2026-01-28 22:44:06.975270"
     },
     {
         "asset_name": "kube-controller-manager-minikube",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856509"
+        "discovery_date": "2026-01-28 22:44:06.975275"
     },
     {
         "asset_name": "kube-proxy-vh5kc",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856514"
+        "discovery_date": "2026-01-28 22:44:06.975279"
     },
     {
         "asset_name": "kube-scheduler-minikube",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856516"
+        "discovery_date": "2026-01-28 22:44:06.975284"
     },
     {
         "asset_name": "storage-provisioner",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856519"
+        "discovery_date": "2026-01-28 22:44:06.975289"
     },
     {
         "asset_name": "kyverno-admission-controller-75f94f795c-n6pkw",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856521"
+        "discovery_date": "2026-01-28 22:44:06.975293"
     },
     {
         "asset_name": "kyverno-background-controller-84668c7b48-dct2b",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856523"
+        "discovery_date": "2026-01-28 22:44:06.975298"
+    },
+    {
+        "asset_name": "kyverno-cleanup-admission-reports-29490870-vpkd8",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Pending",
+        "discovery_date": "2026-01-28 22:44:06.975308"
+    },
+    {
+        "asset_name": "kyverno-cleanup-cluster-admission-reports-29490870-xfnp7",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Pending",
+        "discovery_date": "2026-01-28 22:44:06.975313"
     },
     {
         "asset_name": "kyverno-cleanup-controller-54fd8486cf-w4f7k",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856526"
+        "discovery_date": "2026-01-28 22:44:06.975318"
     },
     {
         "asset_name": "kyverno-reports-controller-d5cb5784-pzbwn",
         "owner": "UNKNOWN",
         "system_id": "UNKNOWN",
         "status": "Running",
-        "discovery_date": "2026-01-26 23:58:02.856528"
+        "discovery_date": "2026-01-28 22:44:06.975322"
     }
 ]
