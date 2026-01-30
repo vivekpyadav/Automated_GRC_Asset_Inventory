@@ -5,7 +5,9 @@
         "owner": "DevOps-dept",
         "system_id": "SYS-0101",
         "status": "Running",
-        "discovery_date": "2026-01-30 22:28:25.329561"
+        "compliance_status": "COMPLIANT",
+        "reason": "All controls met",
+        "discovery_date": "2026-01-30 23:10:40"
     },
     {
         "asset_name": "devops-good-pod2",
@@ -13,6 +15,8 @@
         "owner": "DevOps-dept",
         "system_id": "SYS-0101",
         "status": "Running",
-        "discovery_date": "2026-01-30 22:28:25.329596"
+        "compliance_status": "COMPLIANT",
+        "reason": "All controls met",
+        "discovery_date": "2026-01-30 23:10:40"
     }
 ]

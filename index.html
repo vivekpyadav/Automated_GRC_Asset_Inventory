@@ -5,25 +5,23 @@
         <title>NIST 800-53 Compliance Dashboard</title>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background: #f0f2f5; padding-top: 50px; }
-            .container { width: 500px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+            body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #f0f2f5; padding-top: 50px; }
+            .container { width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
             .status-box { font-size: 2.5em; font-weight: bold; color: #28a745; margin: 20px 0; }
-            h1 { color: #1a73e8; }
-            .stats { font-size: 1.1em; color: #555; }
-            .footer { margin-top: 25px; font-size: 0.8em; color: #888; }
+            .legend { display: flex; justify-content: space-around; margin-top: 20px; font-weight: bold; }
+            .compliant { color: #28a745; }
+            .non-compliant { color: #dc3545; }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>Compliance Dashboard</h1>
-            <p>NIST 800-53: Asset Management Control</p>
+            <h1>Unified Compliance Dashboard</h1>
             <canvas id="complianceChart"></canvas>
-            <div class="status-box">100.0%</div>
-            <div class="stats">
-                <p>Total Assets Discovered: <strong>2</strong></p>
-                <p>Compliant: 2 | Non-Compliant: 0</p>
+            <div class="status-box">100.0% Score</div>
+            <div class="legend">
+                <div class="compliant">Compliant: 2</div>
+                <div class="non-compliant">Non-Compliant: 0</div>
             </div>
-            <div class="footer">Last Audit: 2026-01-30 22:28:25</div>
         </div>
         <script>
             const ctx = document.getElementById('complianceChart').getContext('2d');
@@ -34,13 +32,9 @@
                     datasets: [{
                         data: [2, 0],
                         backgroundColor: ['#28a745', '#dc3545'],
-                        borderWidth: 0
                     }]
                 },
-                options: {
-                    cutout: '75%',
-                    plugins: { legend: { position: 'bottom' } }
-                }
+                options: { cutout: '70%' }
             });
         </script>
     </body>
