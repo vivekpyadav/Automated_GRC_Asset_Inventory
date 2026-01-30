@@ -1,5 +1,25 @@
 [
     {
+        "asset_name": "bad-pod",
+        "namespace": "default",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "compliance_status": "NON-COMPLIANT",
+        "reason": "Missing NIST Labels",
+        "discovery_date": "2026-01-30 23:19:09"
+    },
+    {
+        "asset_name": "bad-pod2",
+        "namespace": "default",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "compliance_status": "NON-COMPLIANT",
+        "reason": "Missing NIST Labels",
+        "discovery_date": "2026-01-30 23:19:09"
+    },
+    {
         "asset_name": "devops-good-pod",
         "namespace": "default",
         "owner": "DevOps-dept",
@@ -7,7 +27,7 @@
         "status": "Running",
         "compliance_status": "COMPLIANT",
         "reason": "All controls met",
-        "discovery_date": "2026-01-30 23:10:40"
+        "discovery_date": "2026-01-30 23:19:09"
     },
     {
         "asset_name": "devops-good-pod2",
@@ -17,6 +37,6 @@
         "status": "Running",
         "compliance_status": "COMPLIANT",
         "reason": "All controls met",
-        "discovery_date": "2026-01-30 23:10:40"
+        "discovery_date": "2026-01-30 23:19:09"
     }
 ]
