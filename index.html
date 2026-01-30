@@ -7,7 +7,7 @@
         <style>
             body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #f0f2f5; padding-top: 50px; }
             .container { width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-            .status-box { font-size: 2.5em; font-weight: bold; color: #dc3545; margin: 20px 0; }
+            .status-box { font-size: 2.5em; font-weight: bold; color: #28a745; margin: 20px 0; }
             .legend { display: flex; justify-content: space-around; margin-top: 20px; font-weight: bold; }
             .compliant { color: #28a745; }
             .non-compliant { color: #dc3545; }
@@ -17,10 +17,10 @@
         <div class="container">
             <h1>Unified Compliance Dashboard</h1>
             <canvas id="complianceChart"></canvas>
-            <div class="status-box">50.0% Score</div>
+            <div class="status-box">100.0% Score</div>
             <div class="legend">
                 <div class="compliant">Compliant: 2</div>
-                <div class="non-compliant">Non-Compliant: 2</div>
+                <div class="non-compliant">Non-Compliant: 0</div>
             </div>
         </div>
         <script>
@@ -30,7 +30,7 @@
                 data: {
                     labels: ['Compliant', 'Non-Compliant'],
                     datasets: [{
-                        data: [2, 2],
+                        data: [2, 0],
                         backgroundColor: ['#28a745', '#dc3545'],
                     }]
                 },
