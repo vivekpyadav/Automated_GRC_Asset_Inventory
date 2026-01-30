@@ -1,6 +1,7 @@
 import subprocess
 import json
 import datetime
+import sys
 
 def get_kubernetes_inventory():
     # 1. Get all pods
@@ -40,7 +41,7 @@ def get_kubernetes_inventory():
         }
         inventory.append(entry)
 
-    # 3. OPTIONAL: Fetch Kyverno PolicyReports (Captures violations even if pods are blocked/audited)
+    # 3. Fetch Kyverno PolicyReports (Captures violations even if pods are blocked/audited)
     try:
         cmd_reports = "kubectl get policyreports -A -o json"
         report_result = subprocess.check_output(cmd_reports, shell=True)
@@ -49,7 +50,6 @@ def get_kubernetes_inventory():
         for report in report_data.get('items', []):
             for result in report.get('results', []):
                 if result.get('result') == "fail":
-                    # Add a 'Shadow Asset' entry for the failed attempt
                     entry = {
                         "asset_name": result['resources'][0]['name'],
                         "namespace": result['resources'][0]['namespace'],
@@ -62,23 +62,37 @@ def get_kubernetes_inventory():
                     }
                     inventory.append(entry)
     except:
-        print("No PolicyReports found or Kyverno not reporting. Skipping advanced audit.")
+        print("No PolicyReports found. Skipping advanced audit.")
 
-    # Save to file
     with open('asset_inventory.json', 'w') as f:
         json.dump(inventory, f, indent=4)
     
     return inventory
 
+def remediate_non_compliant_assets(inventory_data):
+    """
+    Removes non-compliant pods from the cluster (NIST 800-53 IR-4).
+    """
+    print("\n--- Starting Active Remediation ---")
+    for item in inventory_data:
+        # Only remediate 'Live' pods, not 'Failed Admission' records
+        if item['compliance_status'] == "NON-COMPLIANT" and item['status'] != "Failed Admission":
+            name = item['asset_name']
+            ns = item['namespace']
+            print(f"⚠️ Removing non-compliant pod: {name} in {ns}")
+            try:
+                subprocess.run(f"kubectl delete pod {name} -n {ns} --timeout=10s", shell=True)
+            except Exception as e:
+                print(f"❌ Failed to delete {name}: {e}")
+    print("--- Remediation Complete ---\n")
+
 def generate_github_summary(inventory_data):
     summary = "### 📊 NIST 800-53 Unified Asset Inventory\n"
     summary += "| Asset Name | Status | Compliance | Reason |\n"
     summary += "| :--- | :--- | :--- | :--- |\n"
-    
     for item in inventory_data:
         emoji = "✅" if item['compliance_status'] == "COMPLIANT" else "❌"
         summary += f"| {item['asset_name']} | {item['status']} | {emoji} {item['compliance_status']} | {item['reason']} |\n"
-    
     with open('github_summary.md', 'w') as f:
         f.write(summary)
 
@@ -135,6 +149,16 @@ def generate_html_dashboard(inventory_data):
         f.write(html_template)
 
 if __name__ == "__main__":
+    # Check for the --fix flag
+    should_remediate = "--fix" in sys.argv
+    
+    # Run discovery
     inventory = get_kubernetes_inventory()
+    
+    # If remediating, fix the cluster and re-run discovery for the final report
+    if should_remediate:
+        remediate_non_compliant_assets(inventory)
+        inventory = get_kubernetes_inventory() # Refresh to show 100% compliance
+        
     generate_html_dashboard(inventory)
     generate_github_summary(inventory)

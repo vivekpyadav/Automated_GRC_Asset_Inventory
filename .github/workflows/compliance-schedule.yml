@@ -2,7 +2,17 @@ name: Weekly Asset Review
 on:
   schedule:
     - cron: '0 0 * * 1' 
-  workflow_dispatch: 
+  workflow_dispatch:
+    # Adding the selection menu for Audit vs Remediation
+    inputs:
+      action_type:
+        description: 'Choose Governance Action'
+        required: true
+        type: choice
+        default: 'audit'
+        options:
+          - audit
+          - remediate
 
 permissions:
   contents: write
@@ -19,10 +29,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          path: . # Explicitly set path to avoid nesting errors
+          path: .
 
       - name: Fix Git Safe Directory
-        # This prevents the 'ENOENT' error by telling Git the local folder is safe
         run: git config --global --add safe.directory ${{ github.workspace }}
 
       - name: Setup Git User
@@ -30,50 +39,45 @@ jobs:
           git config --global user.name "Compliance-Bot"
           git config --global user.email "compliance-bot@example.com"
 
-      - name: Run Inventory Script (Attempt 1)
+      - name: Run Inventory Script
         id: run_script
-        continue-on-error: true 
-        run: python3 inventory_collector.py
-
-      - name: Retry Script (Attempt 2)
-        if: steps.run_script.outcome == 'failure'
+        # Logic to pass the --fix flag ONLY if 'remediate' is selected
         run: |
-          echo "First attempt failed. Waiting 60 seconds before retrying..."
-          sleep 60
-          python3 inventory_collector.py
+          if [ "${{ github.event.inputs.action_type }}" == "remediate" ]; then
+            echo "🚀 Running in REMEDIATION mode..."
+            python3 inventory_collector.py --fix
+          else
+            echo "🛡️ Running in AUDIT mode..."
+            python3 inventory_collector.py
+          fi
 
       - name: Write Job Summary
-        # This creates the table in the GitHub Actions UI
         if: always()
         run: |
           if [ -f github_summary.md ]; then
             cat github_summary.md >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name: Manual Git Push (Alternative to PR)
+      - name: Manual Git Push (Update Master)
         if: success()
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          
-          # Explicitly add ONLY the compliance files (ignores the runner folder)
-          git add asset_inventory.json index.html github_summary.md || echo "Some files missing, continuing..."
+          git add asset_inventory.json index.html github_summary.md || echo "Files missing"
           
           if git diff --staged --quiet; then
             echo "No changes in inventory. Skipping push."
           else
-            git commit -m "Compliance Update: Run #${{ github.run_number }}"
+            git commit -m "Compliance Update (${{ github.event.inputs.action_type }}): Run #${{ github.run_number }}"
             git push origin HEAD:master
           fi
 
-      - name: Deploy Dashboard to GitHub Pages (Visual Evidence)
+      - name: Deploy Dashboard to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./ 
           publish_branch: gh-pages
-
-      
 
       - name: Send Slack Notification (On Failure)
         if: failure()
@@ -82,4 +86,4 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_COLOR: '#ff0000'
           SLACK_TITLE: 'CRITICAL: NIST 800-53 Control Failure'
-          SLACK_MESSAGE: 'The Weekly Asset Inventory failed after 2 attempts. Please check the Local Runner and Minikube status.'
+          SLACK_MESSAGE: 'The Weekly Asset Inventory failed. Action Type: ${{ github.event.inputs.action_type }}'
