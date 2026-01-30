@@ -5,35 +5,37 @@ import datetime
 def get_kubernetes_inventory():
     # Run kubectl command to get pods with their labels in JSON format
     cmd = "kubectl get pods -A -o json"
-    try:
-        result = subprocess.check_output(cmd, shell=True)
-        data = json.loads(result)
-    except Exception as e:
-        print(f"Error connecting to Kubernetes: {e}")
-        raise e # Re-raise to ensure the GitHub Action fails and sends a Slack alert
+    result = subprocess.check_output(cmd, shell=True)
+    data = json.loads(result)
     
     inventory = []
     
+    # List of namespaces to ignore for compliance reporting
+    ignored_namespaces = ["kube-system", "kube-public", "kube-node-lease", "kyverno"]
+    
     for item in data['items']:
+        namespace = item['metadata']['namespace']
+        
+        # SKIP assets that belong to system namespaces
+        if namespace in ignored_namespaces:
+            continue
+            
         name = item['metadata']['name']
         labels = item['metadata'].get('labels', {})
         
-        # Extract our NIST-required labels
         entry = {
             "asset_name": name,
+            "namespace": namespace,  # Added for better tracking
             "owner": labels.get("owner", "UNKNOWN"),
             "system_id": labels.get("system-id", "UNKNOWN"),
             "status": item['status']['phase'],
-            "discovery_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            "discovery_date": str(datetime.datetime.now())
         }
         inventory.append(entry)
     
-    # Save to a file (The 'Actual Update')
     with open('asset_inventory.json', 'w') as f:
         json.dump(inventory, f, indent=4)
-    print("Inventory updated: asset_inventory.json created.")
     
-    # CRITICAL FIX: Return the list so the dashboard function can use it
     return inventory
 
 def generate_github_summary(inventory_data):
