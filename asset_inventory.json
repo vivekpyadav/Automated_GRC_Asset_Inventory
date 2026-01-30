@@ -7,7 +7,7 @@
         "status": "Running",
         "compliance_status": "NON-COMPLIANT",
         "reason": "Missing NIST Labels",
-        "discovery_date": "2026-01-30 23:19:09"
+        "discovery_date": "2026-01-30 23:36:38"
     },
     {
         "asset_name": "bad-pod2",
@@ -17,7 +17,7 @@
         "status": "Running",
         "compliance_status": "NON-COMPLIANT",
         "reason": "Missing NIST Labels",
-        "discovery_date": "2026-01-30 23:19:09"
+        "discovery_date": "2026-01-30 23:36:38"
     },
     {
         "asset_name": "devops-good-pod",
@@ -27,7 +27,7 @@
         "status": "Running",
         "compliance_status": "COMPLIANT",
         "reason": "All controls met",
-        "discovery_date": "2026-01-30 23:19:09"
+        "discovery_date": "2026-01-30 23:36:38"
     },
     {
         "asset_name": "devops-good-pod2",
@@ -37,6 +37,6 @@
         "status": "Running",
         "compliance_status": "COMPLIANT",
         "reason": "All controls met",
-        "discovery_date": "2026-01-30 23:19:09"
+        "discovery_date": "2026-01-30 23:36:38"
     }
 ]
