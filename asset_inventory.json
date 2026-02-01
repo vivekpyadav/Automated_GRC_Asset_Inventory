@@ -1,22 +1,42 @@
 [
     {
-        "asset_name": "devops-good-pod",
+        "asset_name": "auth-service",
         "namespace": "default",
-        "owner": "DevOps-dept",
-        "system_id": "SYS-0101",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
         "status": "Running",
-        "compliance_status": "COMPLIANT",
-        "reason": "All controls met",
-        "discovery_date": "2026-01-30 23:38:01"
+        "compliance_status": "NON-COMPLIANT",
+        "reason": "Missing NIST Labels",
+        "discovery_date": "2026-02-01 06:48:59"
     },
     {
-        "asset_name": "devops-good-pod2",
+        "asset_name": "cache-layer",
         "namespace": "default",
-        "owner": "DevOps-dept",
-        "system_id": "SYS-0101",
+        "owner": "platform-ops",
+        "system_id": "infra-cache",
         "status": "Running",
         "compliance_status": "COMPLIANT",
         "reason": "All controls met",
-        "discovery_date": "2026-01-30 23:38:01"
+        "discovery_date": "2026-02-01 06:48:59"
+    },
+    {
+        "asset_name": "customer-portal",
+        "namespace": "default",
+        "owner": "UNKNOWN",
+        "system_id": "UNKNOWN",
+        "status": "Running",
+        "compliance_status": "NON-COMPLIANT",
+        "reason": "Missing NIST Labels",
+        "discovery_date": "2026-02-01 06:48:59"
+    },
+    {
+        "asset_name": "order-processor",
+        "namespace": "default",
+        "owner": "finance-team",
+        "system_id": "erp-001",
+        "status": "Running",
+        "compliance_status": "COMPLIANT",
+        "reason": "All controls met",
+        "discovery_date": "2026-02-01 06:48:59"
     }
 ]
